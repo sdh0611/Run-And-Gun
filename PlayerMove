@@ -1,0 +1,70 @@
+using UnityEngine;
+using System.Collections;
+
+public class PlayerController : MonoBehaviour {
+
+    [HideInInspector]
+    public bool isFacingRight = true; // 플레이어가 보고있는 방향
+    [HideInInspector]
+    public bool isJumping = false; // 점프 중인지
+    [HideInInspector]
+    public bool isGrounded = false; // 플레이어가 땅에 닿아있는지
+
+    public float Speed = 7.0f;
+    public float jumpForce = 300.0f;
+
+    public Transform groundCheck;
+    public LayerMask groundLayers;
+
+    private float groundCheckRadius = 0.2f;
+    private Animator anim;
+
+    Rigidbody2D rb2D;
+
+	// Use this for initialization
+	void Start () {
+        rb2D = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        
+	}
+	
+	// Update is called once per frame
+	void Update () {
+
+
+        float move = Input.GetAxisRaw("Horizontal");
+        Vector2 moveDir = new Vector2(move * Speed, rb2D.velocity.y);
+        rb2D.velocity = moveDir;
+        anim.SetFloat("Speed", Mathf.Abs(move));
+        anim.SetBool("Ground", isGrounded);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayers);
+
+        if (((move > 0.0f && isFacingRight == false) || (move < 0.0f && isFacingRight == true)) && isGrounded == true) {
+            Flip();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space)){
+
+            if (isGrounded == true) {
+                rb2D.velocity = new Vector2(rb2D.velocity.x, 0);
+                rb2D.AddForce(new Vector2(0, jumpForce));
+            }
+        }
+       
+	}
+
+    
+    void Flip() // 플레이어 뒤집는 함수
+    {
+        isFacingRight = !isFacingRight;
+        Vector3 playerScale = transform.localScale;
+        playerScale.x = playerScale.x * -1;
+        transform.localScale = playerScale;
+    }
+
+
+    void FixedUpdate()
+    {
+       
+    }
+}
