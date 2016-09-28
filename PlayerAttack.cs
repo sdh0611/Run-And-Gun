@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerAttack : MonoBehaviour
 {
-    private bool attacking = false;
+    public bool attacking = false;
 
     private float attackTimer = 0; //공격 시간
     private float attackCd = 0.3f; // 공격 0.3 초 동안 활성화 시키기 위한 변수

@@ -3,11 +3,13 @@ using System.Collections;
 
 public class playerBulletLeft : MonoBehaviour
 {
-    float speed;
+    public float speed;     //미사일의 속도값을 저장하는 변수.
+                            //Unity내에서 속도값을 조절할 수 있도록 public으로 변경하였음. 
+
     // Use this for initialization
     void Start()
     {
-        speed = 13.0f;
+
     }
 
     // Update is called once per frame
